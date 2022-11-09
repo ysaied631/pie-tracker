@@ -1,0 +1,18 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.Title {
+  text-align: center;
+}
+
+.PieContainer {
+  display: inline-flex;
+  gap: 20px;
+}
+
+.Chart {
+  width: 250px;
+}

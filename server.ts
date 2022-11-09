@@ -1,29 +1,58 @@
-import { config } from 'dotenv';
-import express, { Request, Response } from 'express';
-import next from 'next';
-import mongoose from 'mongoose';
+import { config } from "dotenv";
+import express, { Request, Response } from "express";
+import next from "next";
+import mongoose from "mongoose";
+import PieModel from "./src/db/PieModel";
 
 config();
 
 (async () => {
-  const port = parseInt(process.env.PORT || '8080', 10);
-  const dev = process.env.NODE_ENV !== 'production';
+  const port = parseInt(process.env.PORT || "8080", 10);
+  const dev = process.env.NODE_ENV !== "production";
   const app = next({ dev });
   const handle = app.getRequestHandler();
 
   try {
-    await mongoose.connect(process.env.MONGO_URL || ''/*, {
+    await mongoose.connect(
+      process.env.MONGO_URL || "" /*, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-    }*/);
-    console.log('Connected to DB !!');
+    }*/
+    );
+    console.log("Connected to DB !!");
 
     await app.prepare();
     const server = express();
 
-    server.all('/healthcheck', (req: Request, res: Response) => res.status(200).send('Healthy'));
+    server.get("/sse", async (req: Request, res: Response) => {
+      res.writeHead(200, {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+      });
 
-    server.all('*', (req: Request, res: Response) => handle(req, res));
+      let interval: ReturnType<typeof setTimeout>;
+      const { userId } = req.query;
+
+      interval = setInterval(async () => {
+        const data = await PieModel.find({ userId: userId });
+        data.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+        data.slice(0, 6);
+        res.write(`data: ${JSON.stringify(data)}\n\n`);
+      }, 3000);
+
+      res.on("close", () => {
+        console.log("client dropped me");
+        if (interval) clearInterval(interval);
+        res.end();
+      });
+    });
+
+    server.all("/healthcheck", (req: Request, res: Response) =>
+      res.status(200).send("Healthy")
+    );
+
+    server.all("*", (req: Request, res: Response) => handle(req, res));
 
     server.listen(port, (err?: any) => {
       if (err) throw err;
@@ -33,7 +62,6 @@ config();
     console.log(e);
     throw e;
   }
-
 })().catch((error) => {
-  console.log('server error', error);
+  console.log("server error", error);
 });

@@ -1,0 +1,70 @@
+import { User } from "@src/types";
+import React, { useState, useEffect } from "react";
+import { PieChart } from "react-minimal-pie-chart";
+import styles from "@components/PieHistory.module.scss";
+import _ from "lodash";
+
+interface PieHistoryPropsI {
+  user: User;
+}
+
+type Activity = {
+  name: string;
+  hours: number;
+};
+
+type Pie = {
+  activities: Activity[];
+};
+
+const PieHistory = ({ user }: PieHistoryPropsI) => {
+  const [pies, setPies] = useState<Pie[]>([]);
+  const [listening, setListening] = useState(false);
+
+  useEffect(() => {
+    if (!listening) {
+      const sse = new EventSource(`/sse?userId=${user.id}`);
+
+      sse.onmessage = (e) => {
+        const newData = JSON.parse(e.data) as Pie[];
+        setPies((pies) => (_.isEqual(pies, newData) ? pies : newData));
+      };
+      sse.onerror = (err) => {
+        console.log(err);
+        sse.close();
+      };
+      setListening(true);
+    }
+  }, []);
+
+  //console.log(pies);
+  return (
+    <div className={styles.Container}>
+      <span className={styles.Title}>Last 7 charts</span>
+      <div className={styles.PieContainer}>
+        {listening &&
+          pies.length > 0 &&
+          pies?.map((pie: Pie) => (
+            <PieChart
+              data={pie.activities.map((activity: Activity) => {
+                return {
+                  title: activity.name,
+                  value: activity.hours,
+                  color:
+                    "#" +
+                    ((Math.random() * 0xffffff) << 0)
+                      .toString(16)
+                      .padStart(6, "0"),
+                };
+              })}
+              className={styles.Chart}
+              label={({ dataEntry }) => dataEntry.title}
+              labelStyle={{ fontSize: "5px" }}
+            />
+          ))}
+      </div>
+    </div>
+  );
+};
+
+export default PieHistory;
