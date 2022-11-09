@@ -5,7 +5,7 @@ import styles from "@components/PieHistory.module.scss";
 import _ from "lodash";
 
 interface PieHistoryPropsI {
-  user: User;
+  user?: User;
 }
 
 type Activity = {
@@ -23,7 +23,7 @@ const PieHistory = ({ user }: PieHistoryPropsI) => {
 
   useEffect(() => {
     if (!listening) {
-      const sse = new EventSource(`/sse?userId=${user.id}`);
+      const sse = new EventSource(`/sse?userId=${user?.id}`);
 
       sse.onmessage = (e) => {
         const newData = JSON.parse(e.data) as Pie[];

@@ -5,7 +5,7 @@ import InputForm from "@components/InputForm";
 import PieHistory from "@components/PieHistory";
 
 interface HomePropsI {
-  user: User;
+  user?: User;
 }
 
 const Home = ({ user }: HomePropsI) => {

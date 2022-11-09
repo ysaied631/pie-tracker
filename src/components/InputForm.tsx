@@ -24,7 +24,7 @@ const options: OptionType[] = [
 ];
 
 interface InputFormPropsI {
-  user: User;
+  user?: User;
 }
 
 const InputForm = ({ user }: InputFormPropsI) => {
@@ -40,7 +40,7 @@ const InputForm = ({ user }: InputFormPropsI) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: user.id,
+        userId: user?.id,
         activity: activity?.value,
       }),
     });
@@ -53,7 +53,7 @@ const InputForm = ({ user }: InputFormPropsI) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: user.id,
+        userId: user?.id,
         activity: activity?.value,
       }),
     });
