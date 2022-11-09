@@ -1,0 +1,46 @@
+.authContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  left: 20%;
+  width: 60%;
+  top: 20%;
+  height: 60%;
+  border: 1px solid black;
+  border-radius: 5px;
+
+}
+
+.authHeader {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 60%;
+  margin-top: 20px;
+
+  &__text {
+    cursor: pointer;
+  }
+
+  &__selected {
+    border-bottom: 1px solid black;
+  }
+}
+
+.authFieldContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 50%;
+  gap: 25px;
+}
+
+.authField {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 300px;
+
+  &__input {
+    width: 200px;
+  }
+}
