@@ -1,8 +1,8 @@
-import React from "react";
-import { User } from "@src/types";
-import styles from "@components/Home.module.scss";
-import InputForm from "@components/InputForm";
-import PieHistory from "@components/PieHistory";
+import React from 'react';
+import { User } from '@src/types';
+import styles from '@components/Home.module.scss';
+import InputForm from '@components/InputForm';
+import PieHistory from '@components/PieHistory';
 
 interface HomePropsI {
   user?: User;

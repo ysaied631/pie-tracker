@@ -20,7 +20,7 @@ export const runMiddleware = (
 
       return resolve(result);
     });
-  })
+  });
 };
 
 export const runCorsMiddleware = (
@@ -35,5 +35,5 @@ export const runCorsMiddleware = (
 
       return resolve(result);
     });
-  })
+  });
 };

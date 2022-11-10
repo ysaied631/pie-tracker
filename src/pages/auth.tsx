@@ -1,8 +1,6 @@
-import React from "react";
-import type { NextPage, GetServerSidePropsContext } from "next";
-import Auth from "../components/Auth";
-import { userFromRequest } from "@utils/auth";
-import { User } from "@src/types";
+import React from 'react';
+import type { NextPage } from 'next';
+import Auth from '../components/Auth';
 
 const AuthPage: NextPage = () => {
   return (

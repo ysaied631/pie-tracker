@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { User } from "@src/types";
-import Select, { SingleValue } from "react-select";
-import styles from "@components/InputForm.module.scss";
+import React, { useState } from 'react';
+import { User } from '@src/types';
+import Select, { SingleValue } from 'react-select';
+import styles from '@components/InputForm.module.scss';
 
 type OptionType = {
   value: string;
@@ -10,24 +10,24 @@ type OptionType = {
 
 const options: OptionType[] = [
   {
-    label: "Calls",
-    value: "Calls",
+    label: 'Calls',
+    value: 'Calls',
   },
   {
-    label: "Coding",
-    value: "Coding",
+    label: 'Coding',
+    value: 'Coding',
   },
   {
-    label: "PRs",
-    value: "PRs",
+    label: 'PRs',
+    value: 'PRs',
   },
   {
-    label: "Ticketing",
-    value: "Ticketing",
+    label: 'Ticketing',
+    value: 'Ticketing',
   },
   {
-    label: "Unit testing",
-    value: "Unit testing",
+    label: 'Unit testing',
+    value: 'Unit testing',
   },
 ];
 
@@ -37,15 +37,15 @@ interface InputFormPropsI {
 
 const InputForm = ({ user }: InputFormPropsI) => {
   const [activity, setActivity] = useState<SingleValue<OptionType>>({
-    label: "",
-    value: "",
+    label: '',
+    value: '',
   });
 
   const AddActivity = async () => {
-    await fetch("/api/pie/add", {
-      method: "POST",
+    await fetch('/api/pie/add', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         userId: user?.id,
@@ -55,10 +55,10 @@ const InputForm = ({ user }: InputFormPropsI) => {
   };
 
   const RemoveActivity = async () => {
-    await fetch("/api/pie/remove", {
-      method: "POST",
+    await fetch('/api/pie/remove', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         userId: user?.id,

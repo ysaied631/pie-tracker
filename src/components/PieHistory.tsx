@@ -1,8 +1,8 @@
-import { User } from "@src/types";
-import React, { useState, useEffect } from "react";
-import { PieChart } from "react-minimal-pie-chart";
-import styles from "@components/PieHistory.module.scss";
-import _ from "lodash";
+import { User } from '@src/types';
+import React, { useState, useEffect } from 'react';
+import { PieChart } from 'react-minimal-pie-chart';
+import styles from '@components/PieHistory.module.scss';
+import _ from 'lodash';
 
 interface PieHistoryPropsI {
   user?: User;
@@ -48,20 +48,20 @@ const PieHistory = ({ user }: PieHistoryPropsI) => {
             ?.sort(
               (a: Pie, b: Pie) =>
                 new Date(b.createdAt).getMilliseconds() -
-                new Date(a.createdAt).getMilliseconds()
+                new Date(a.createdAt).getMilliseconds(),
             )
-            .map((pie: Pie) => (
-              <div className={styles.Pie}>
+            .map((pie: Pie, index: number) => (
+              <div className={styles.Pie} key={index}>
                 <PieChart
                   data={pie.activities.map((activity: Activity) => {
                     return {
                       title: activity.name,
                       value: activity.hours,
                       color:
-                        "#" +
+                        '#' +
                         ((Math.random() * 0xffffff) << 0)
                           .toString(16)
-                          .padStart(6, "0"),
+                          .padStart(6, '0'),
                     };
                   })}
                   className={styles.Chart}
@@ -71,10 +71,10 @@ const PieHistory = ({ user }: PieHistoryPropsI) => {
                         pie.activities
                           .map((x) => x.hours)
                           .reduce((psum, a) => psum + a, 0)) *
-                        100
+                        100,
                     )}%`
                   }
-                  labelStyle={{ fontSize: "5px" }}
+                  labelStyle={{ fontSize: '5px' }}
                 />
                 <span>{new Date(pie.createdAt).toDateString()}</span>
               </div>

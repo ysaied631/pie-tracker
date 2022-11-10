@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { User } from "@src/types";
-import Header from "@components/Header";
-import useRouter from "next/router";
+import React, { useEffect } from 'react';
+import { User } from '@src/types';
+import Header from '@components/Header';
+import useRouter from 'next/router';
 
 interface LayoutPropsI {
   user?: User;
@@ -23,7 +23,7 @@ function recursiveMap(children: any, fn: any) {
         });
       }
 
-      if (typeof child.type === "string") {
+      if (typeof child.type === 'string') {
         return child;
       }
 
@@ -41,7 +41,7 @@ const Layout = ({ user, children }: LayoutPropsI) => {
         React.cloneElement(child, { user })
       );
     } else {
-      router.push("/auth");
+      router.push('/auth');
     }
   }, [user]);
 

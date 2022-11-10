@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
-import { runCorsMiddleware } from "@utils/middleware";
-import PieModel from "@src/db/PieModel";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { runCorsMiddleware } from '@utils/middleware';
+import PieModel from '@src/db/PieModel';
 
 type reqBody = {
   userId: string;
@@ -12,7 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req;
   const { userId, activity } = req.body as reqBody;
   //await runCorsMiddleware(req, res);
-  if (method != "POST") res.status(400).send("Bad request method");
+  if (method != 'POST') res.status(400).send('Bad request method');
 
   const dateWithoutTime = new Date();
   dateWithoutTime.setHours(0, 0, 0, 0);
@@ -30,25 +30,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         activities:
           activityExists?.hours > 1
             ? [
-                ...todaysPie.activities.filter((x) => x.name != activity),
-                {
-                  name: activity,
-                  hours: activityExists.hours - 1,
-                },
-              ]
+              ...todaysPie.activities.filter((x) => x.name != activity),
+              {
+                name: activity,
+                hours: activityExists.hours - 1,
+              },
+            ]
             : [
-                ...todaysPie.activities.filter((x) => x.name != activity),
-                {
-                  name: activity,
-                  hours: 0,
-                },
-              ],
+              ...todaysPie.activities.filter((x) => x.name != activity),
+              {
+                name: activity,
+                hours: 0,
+              },
+            ],
       };
       await todaysPie.updateOne(updatePie);
     }
   }
 
-  res.status(200).send("Remove");
+  res.status(200).send('Remove');
 };
 
 export default handler;

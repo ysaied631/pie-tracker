@@ -1,4 +1,4 @@
-import { Document, model, Schema, Model, Types, models } from "mongoose";
+import { Document, model, Schema, Model, Types, models } from 'mongoose';
 
 type Activity = {
   name: string;
@@ -39,5 +39,5 @@ const PiesSchema = new Schema<PieInterface>({
   activities: [ActivitiesSchema],
 });
 
-const Pies: Model<PieInterface> = models?.pies || model("pies", PiesSchema);
+const Pies: Model<PieInterface> = models?.pies || model('pies', PiesSchema);
 export default Pies;
