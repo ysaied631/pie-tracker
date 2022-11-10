@@ -13,12 +13,7 @@ config();
   const handle = app.getRequestHandler();
 
   try {
-    await mongoose.connect(
-      process.env.MONGO_URL || '' /*, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }*/,
-    );
+    await mongoose.connect(process.env.MONGO_URL || '');
     console.log('Connected to DB !!');
 
     await app.prepare();

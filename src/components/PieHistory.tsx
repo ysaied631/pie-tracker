@@ -23,18 +23,18 @@ const PieHistory = ({ user }: PieHistoryPropsI) => {
   const [listening, setListening] = useState(false);
 
   useEffect(() => {
-    // if (!listening && user) {
-    //   const sse = new EventSource(`/sse?userId=${user?.id}`);
-    //   sse.onmessage = (e) => {
-    //     const newData = JSON.parse(e.data) as Pie[];
-    //     setPies((pies: Pie[]) => (_.isEqual(pies, newData) ? pies : newData));
-    //   };
-    //   sse.onerror = (err) => {
-    //     console.log(err);
-    //     sse.close();
-    //   };
-    //   setListening(true);
-    // }
+    if (!listening && user) {
+      const sse = new EventSource(`/sse?userId=${user?.id}`);
+      sse.onmessage = (e) => {
+        const newData = JSON.parse(e.data) as Pie[];
+        setPies((pies: Pie[]) => (_.isEqual(pies, newData) ? pies : newData));
+      };
+      sse.onerror = (err) => {
+        console.log(err);
+        sse.close();
+      };
+      setListening(true);
+    }
   }, []);
 
   return (

@@ -3,7 +3,7 @@ import { IncomingMessage } from 'http';
 import { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import { CreateUserInput, User, UserInput } from '@src/types';
 import UserModel from '@db/UserModel';
-import dbConnect from '@utils/dbConnect';
+import mongoose from 'mongoose';
 
 const JWT_TOKEN_KEY = process.env.JWT_TOKEN_KEY || '';
 
@@ -18,7 +18,9 @@ export async function userFromRequest(
     const data = jwt.verify(token, JWT_TOKEN_KEY);
 
     if (!data) return undefined;
-    //await dbConnect();
+
+    await mongoose.connect(process.env.MONGO_URL || '');
+
     const user = await UserModel.findOne({ email: (data as any).email });
 
     return {
