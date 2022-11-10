@@ -16,6 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (method != 'POST') res.status(400).send('Bad request method');
 
+  res.status(200).send(body);
   const user = await UserModel.findOne({ username: body.username });
   console.log('found user');
 
