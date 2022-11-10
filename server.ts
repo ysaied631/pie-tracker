@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express';
 import next from 'next';
 import dbConnect from './src/utils/dbConnect';
 import PieModel from './src/db/PieModel';
-import { Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 config();
 
@@ -14,13 +14,13 @@ config();
   const handle = app.getRequestHandler();
 
   try {
-    // await mongoose.connect(
-    //   process.env.MONGO_URL || '' /*, {
-    //   useNewUrlParser: true,
-    //   useUnifiedTopology: true,
-    // }*/
-    // );
-    // console.log('Connected to DB !!');
+    await mongoose.connect(
+      process.env.MONGO_URL || '' /*, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }*/,
+    );
+    console.log('Connected to DB !!');
 
     await app.prepare();
     const server = express();
@@ -36,7 +36,7 @@ config();
 
       const interval: ReturnType<typeof setTimeout> = setInterval(async () => {
         if (userId) {
-          await dbConnect();
+          //await dbConnect();
           const data = await PieModel.find({
             userId: new Types.ObjectId(userId.toString()),
           });
