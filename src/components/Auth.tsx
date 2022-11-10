@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { login, signup } from '@utils/auth';
 import { CreateUserInput, UserInput } from '@src/types';
-import Router from 'next/router';
+import useRouter from 'next/router';
 import classNames from 'classnames';
 import styles from '@components/Auth.module.scss';
 
 const Auth = () => {
+  const router = useRouter;
+
   const [screen, setScreen] = useState('login');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -14,15 +16,13 @@ const Auth = () => {
   const submitLogin = async () => {
     const model: UserInput = { username, password };
     const res = await login(model);
-    console.log(res);
-    if (res.ok) Router.push('/');
+    if (res.ok) router.push('/');
   };
 
   const submitSignup = async () => {
     const model: CreateUserInput = { email, username, password };
     const res = await signup(model);
-    console.log(res);
-    if (res.ok) Router.push('/');
+    if (res.ok) router.push('/');
   };
 
   return (

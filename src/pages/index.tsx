@@ -12,7 +12,7 @@ interface HomePagePropsI {
 const HomePage: NextPage = ({ user }: HomePagePropsI) => {
   return (
     <Layout user={user}>
-      <Home user={user} />
+      <Home />
     </Layout>
   );
 };
