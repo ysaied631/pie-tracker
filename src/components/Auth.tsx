@@ -23,6 +23,16 @@ const Auth = () => {
     if (res.ok) Router.push('/');
   };
 
+  const test = async () => {
+    const res = await fetch('/api/test', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log(res);
+  };
+
   return (
     <div className={styles.authContainer}>
       <div className={styles.authHeader}>
@@ -69,6 +79,7 @@ const Auth = () => {
             />
           </div>
           <button onClick={submitLogin}>Login</button>
+          <button onClick={test}>test</button>
         </div>
       )}
       {screen == 'signup' && (
