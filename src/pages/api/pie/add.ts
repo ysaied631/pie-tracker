@@ -59,7 +59,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
-  res.status(200).send('Added');
+  const pie = await PieModel.findOne({
+    userId: userId,
+    createdAt: dateWithoutTime,
+  });
+
+  res.status(200).json(pie);
 };
 
 export default handler;

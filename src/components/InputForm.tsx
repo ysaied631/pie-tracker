@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User } from '@src/types';
+import { User, Pie } from '@src/types';
 import Select, { SingleValue } from 'react-select';
 import styles from '@components/InputForm.module.scss';
 
@@ -33,16 +33,18 @@ const options: OptionType[] = [
 
 interface InputFormPropsI {
   user?: User;
+  pies: Pie[];
+  setPies: (pi: Pie[]) => void;
 }
 
-const InputForm = ({ user }: InputFormPropsI) => {
+const InputForm = ({ user, pies, setPies }: InputFormPropsI) => {
   const [activity, setActivity] = useState<SingleValue<OptionType>>({
     label: '',
     value: '',
   });
 
   const AddActivity = async () => {
-    await fetch('/api/pie/add', {
+    const res = await fetch('/api/pie/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -52,10 +54,13 @@ const InputForm = ({ user }: InputFormPropsI) => {
         activity: activity?.value,
       }),
     });
+    const data = await res.json();
+    const newPies = [...pies.filter((x) => x._id != data._id), data];
+    setPies(newPies);
   };
 
   const RemoveActivity = async () => {
-    await fetch('/api/pie/remove', {
+    const res = await fetch('/api/pie/remove', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -65,6 +70,9 @@ const InputForm = ({ user }: InputFormPropsI) => {
         activity: activity?.value,
       }),
     });
+    const data = await res.json();
+    const newPies = [...pies.filter((x) => x._id != data._id), data];
+    setPies(newPies);
   };
 
   return (

@@ -1,8 +1,6 @@
-import { config } from 'dotenv';
 import express, { Request, Response } from 'express';
 import next from 'next';
-import PieModel from './src/db/PieModel';
-import mongoose, { Types } from 'mongoose';
+import { config } from 'dotenv';
 
 config();
 
@@ -13,43 +11,8 @@ config();
   const handle = app.getRequestHandler();
 
   try {
-    await mongoose.connect(process.env.MONGO_URL || '');
-    console.log('Connected to DB !!');
-
     await app.prepare();
     const server = express();
-
-    server.get('/sse', async (req: Request, res: Response) => {
-      res.writeHead(200, {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        Connection: 'keep-alive',
-      });
-
-      const { userId } = req.query;
-
-      const interval: ReturnType<typeof setTimeout> = setInterval(async () => {
-        if (userId) {
-          const data = await PieModel.find({
-            userId: new Types.ObjectId(userId.toString()),
-          });
-          data.sort(
-            (a, b) =>
-              b.createdAt.getMilliseconds() - a.createdAt.getMilliseconds(),
-          );
-          data.slice(0, 6);
-          res.write(`data: ${JSON.stringify(data)}\n\n`);
-        } else {
-          res.write('No user');
-        }
-      }, 3000);
-
-      res.on('close', () => {
-        console.log('client dropped me');
-        if (interval) clearInterval(interval);
-        res.end();
-      });
-    });
 
     server.all('/healthcheck', (req: Request, res: Response) =>
       res.status(200).send('Healthy'),
