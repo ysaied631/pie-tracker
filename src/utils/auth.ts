@@ -18,7 +18,7 @@ export async function userFromRequest(
     const data = jwt.verify(token, JWT_TOKEN_KEY);
 
     if (!data) return undefined;
-    await dbConnect();
+    //await dbConnect();
     const user = await UserModel.findOne({ email: (data as any).email });
 
     return {

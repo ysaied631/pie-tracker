@@ -1,7 +1,6 @@
 import { config } from 'dotenv';
 import express, { Request, Response } from 'express';
 import next from 'next';
-import dbConnect from './src/utils/dbConnect';
 import PieModel from './src/db/PieModel';
 import mongoose, { Types } from 'mongoose';
 
@@ -36,7 +35,6 @@ config();
 
       const interval: ReturnType<typeof setTimeout> = setInterval(async () => {
         if (userId) {
-          //await dbConnect();
           const data = await PieModel.find({
             userId: new Types.ObjectId(userId.toString()),
           });
