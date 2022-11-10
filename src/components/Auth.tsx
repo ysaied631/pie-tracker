@@ -20,17 +20,8 @@ const Auth = () => {
   const submitSignup = async () => {
     const model: CreateUserInput = { email, username, password };
     const res = await signup(model);
-    if (res.ok) Router.push('/');
-  };
-
-  const test = async () => {
-    const res = await fetch('/api/test', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
     console.log(res);
+    if (res.ok) Router.push('/');
   };
 
   return (
@@ -79,7 +70,6 @@ const Auth = () => {
             />
           </div>
           <button onClick={submitLogin}>Login</button>
-          <button onClick={test}>test</button>
         </div>
       )}
       {screen == 'signup' && (
