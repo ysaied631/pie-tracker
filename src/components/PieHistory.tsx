@@ -14,6 +14,7 @@ type Activity = {
 };
 
 type Pie = {
+  createdAt: Date;
   activities: Activity[];
 };
 
@@ -27,7 +28,7 @@ const PieHistory = ({ user }: PieHistoryPropsI) => {
 
       sse.onmessage = (e) => {
         const newData = JSON.parse(e.data) as Pie[];
-        setPies((pies) => (_.isEqual(pies, newData) ? pies : newData));
+        setPies((pies: Pie[]) => (_.isEqual(pies, newData) ? pies : newData));
       };
       sse.onerror = (err) => {
         console.log(err);
@@ -37,31 +38,41 @@ const PieHistory = ({ user }: PieHistoryPropsI) => {
     }
   }, []);
 
-  //console.log(pies);
   return (
     <div className={styles.Container}>
       <span className={styles.Title}>Last 7 charts</span>
       <div className={styles.PieContainer}>
         {listening &&
           pies.length > 0 &&
-          pies?.map((pie: Pie) => (
-            <PieChart
-              data={pie.activities.map((activity: Activity) => {
-                return {
-                  title: activity.name,
-                  value: activity.hours,
-                  color:
-                    "#" +
-                    ((Math.random() * 0xffffff) << 0)
-                      .toString(16)
-                      .padStart(6, "0"),
-                };
-              })}
-              className={styles.Chart}
-              label={({ dataEntry }) => dataEntry.title}
-              labelStyle={{ fontSize: "5px" }}
-            />
-          ))}
+          pies
+            ?.sort(
+              (a: Pie, b: Pie) =>
+                new Date(b.createdAt).getMilliseconds() -
+                new Date(a.createdAt).getMilliseconds()
+            )
+            .map((pie: Pie) => (
+              <div className={styles.Pie}>
+                <PieChart
+                  data={pie.activities.map((activity: Activity) => {
+                    return {
+                      title: activity.name,
+                      value: activity.hours,
+                      color:
+                        "#" +
+                        ((Math.random() * 0xffffff) << 0)
+                          .toString(16)
+                          .padStart(6, "0"),
+                    };
+                  })}
+                  className={styles.Chart}
+                  label={({ dataEntry }) =>
+                    `${dataEntry.title}-${dataEntry.value}`
+                  }
+                  labelStyle={{ fontSize: "5px" }}
+                />
+                <span>{new Date(pie.createdAt).toDateString()}</span>
+              </div>
+            ))}
       </div>
     </div>
   );

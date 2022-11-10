@@ -14,9 +14,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   //await runCorsMiddleware(req, res);
   if (method != "POST") res.status(400).send("Bad request method");
 
+  const dateWithoutTime = new Date();
+  dateWithoutTime.setHours(0, 0, 0, 0);
+
   const todaysPie = await PieModel.findOne({
     userId: userId,
-    createdAt: new Date().toLocaleDateString(),
+    createdAt: dateWithoutTime,
   });
 
   if (todaysPie) {

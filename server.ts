@@ -36,7 +36,10 @@ config();
 
       interval = setInterval(async () => {
         const data = await PieModel.find({ userId: userId });
-        data.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+        data.sort(
+          (a, b) =>
+            b.createdAt.getMilliseconds() - a.createdAt.getMilliseconds()
+        );
         data.slice(0, 6);
         res.write(`data: ${JSON.stringify(data)}\n\n`);
       }, 3000);

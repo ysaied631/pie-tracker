@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   user.passwordHash = "";
 
-  res.status(200).json(JSON.stringify(user));
+  res.status(200).send(user);
 };
 
 export default handler;
