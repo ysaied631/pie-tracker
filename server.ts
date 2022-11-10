@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import next from "next";
 import mongoose from "mongoose";
 import PieModel from "./src/db/PieModel";
+import { Types } from "mongoose";
 
 config();
 
@@ -36,7 +37,9 @@ config();
 
       interval = setInterval(async () => {
         if (userId) {
-          const data = await PieModel.find({ userId: userId });
+          const data = await PieModel.find({
+            userId: new Types.ObjectId(userId.toString()),
+          });
           data.sort(
             (a, b) =>
               b.createdAt.getMilliseconds() - a.createdAt.getMilliseconds()
