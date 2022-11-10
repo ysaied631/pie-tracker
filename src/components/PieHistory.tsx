@@ -4,22 +4,22 @@ import { PieChart } from "react-minimal-pie-chart";
 import styles from "@components/PieHistory.module.scss";
 import _ from "lodash";
 
-// interface PieHistoryPropsI {
-//   user?: User;
-// }
+interface PieHistoryPropsI {
+  user?: User;
+}
 
-// type Activity = {
-//   name: string;
-//   hours: number;
-// };
+type Activity = {
+  name: string;
+  hours: number;
+};
 
-// type Pie = {
-//   createdAt: Date;
-//   activities: Activity[];
-// };
+type Pie = {
+  createdAt: Date;
+  activities: Activity[];
+};
 
-const PieHistory = ({ user }) => {
-  const [pies, setPies] = useState([]);
+const PieHistory = ({ user }: PieHistoryPropsI) => {
+  const [pies, setPies] = useState<Pie[]>([]);
   const [listening, setListening] = useState(false);
 
   useEffect(() => {
@@ -27,8 +27,8 @@ const PieHistory = ({ user }) => {
       const sse = new EventSource(`/sse?userId=${user?.id}`);
 
       sse.onmessage = (e) => {
-        const newData = JSON.parse(e.data);
-        setPies((pies) => (_.isEqual(pies, newData) ? pies : newData));
+        const newData = JSON.parse(e.data) as Pie[];
+        setPies((pies: Pie[]) => (_.isEqual(pies, newData) ? pies : newData));
       };
       sse.onerror = (err) => {
         console.log(err);
@@ -46,14 +46,14 @@ const PieHistory = ({ user }) => {
           pies.length > 0 &&
           pies
             ?.sort(
-              (a, b) =>
+              (a: Pie, b: Pie) =>
                 new Date(b.createdAt).getMilliseconds() -
                 new Date(a.createdAt).getMilliseconds()
             )
-            .map((pie) => (
+            .map((pie: Pie) => (
               <div className={styles.Pie}>
                 <PieChart
-                  data={pie.activities.map((activity) => {
+                  data={pie.activities.map((activity: Activity) => {
                     return {
                       title: activity.name,
                       value: activity.hours,

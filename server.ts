@@ -1,8 +1,8 @@
 import { config } from "dotenv";
-import express from "express";
+import express, { Request, Response } from "express";
 import next from "next";
 import mongoose from "mongoose";
-import PieModel from "./src/db/PieModel.js";
+import PieModel from "./src/db/PieModel";
 import { Types } from "mongoose";
 
 config();
@@ -25,17 +25,16 @@ config();
     await app.prepare();
     const server = express();
 
-    server.get("/sse", async (req, res) => {
+    server.get("/sse", async (req: Request, res: Response) => {
       res.writeHead(200, {
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache",
         Connection: "keep-alive",
       });
 
-      //let interval: ReturnType<typeof setTimeout>;
       const { userId } = req.query;
 
-      const interval = setInterval(async () => {
+      const interval: ReturnType<typeof setTimeout> = setInterval(async () => {
         if (userId) {
           const data = await PieModel.find({
             userId: new Types.ObjectId(userId.toString()),
@@ -58,11 +57,13 @@ config();
       });
     });
 
-    server.all("/healthcheck", (req, res) => res.status(200).send("Healthy"));
+    server.all("/healthcheck", (req: Request, res: Response) =>
+      res.status(200).send("Healthy")
+    );
 
-    server.all("*", (req, res) => handle(req, res));
+    server.all("*", (req: Request, res: Response) => handle(req, res));
 
-    server.listen(port, (err) => {
+    server.listen(port, (err?: any) => {
       if (err) throw err;
       console.log(`> Ready on localhost:${port} - env ${process.env.NODE_ENV}`);
     });

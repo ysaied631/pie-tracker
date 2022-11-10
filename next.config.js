@@ -5,7 +5,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   sassOptions: {
-    includePaths: [path.join(__dirname, "src/style")],
+    includePaths: [path.join(__dirname, "src/components")],
   },
   webpack: (config, _options) => {
     config.resolve.alias["@src"] = path.resolve(__dirname, "./src");
@@ -19,7 +19,6 @@ const nextConfig = {
     config.resolve.alias["@db"] = path.resolve(__dirname, "./src/db");
 
     config.resolve.extensions = config.resolve.extensions.concat([
-      ".js",
       ".ts",
       ".tsx",
     ]);
