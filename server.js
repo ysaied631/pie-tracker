@@ -25,17 +25,17 @@ config();
     await app.prepare();
     const server = express();
 
-    server.get("/sse", async (req: Request, res: Response) => {
+    server.get("/sse", async (req, res) => {
       res.writeHead(200, {
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache",
         Connection: "keep-alive",
       });
 
-      let interval: ReturnType<typeof setTimeout>;
+      //let interval: ReturnType<typeof setTimeout>;
       const { userId } = req.query;
 
-      interval = setInterval(async () => {
+      const interval = setInterval(async () => {
         if (userId) {
           const data = await PieModel.find({
             userId: new Types.ObjectId(userId.toString()),
@@ -58,13 +58,11 @@ config();
       });
     });
 
-    server.all("/healthcheck", (req: Request, res: Response) =>
-      res.status(200).send("Healthy")
-    );
+    server.all("/healthcheck", (req, res) => res.status(200).send("Healthy"));
 
-    server.all("*", (req: Request, res: Response) => handle(req, res));
+    server.all("*", (req, res) => handle(req, res));
 
-    server.listen(port, (err?: any) => {
+    server.listen(port, (err) => {
       if (err) throw err;
       console.log(`> Ready on localhost:${port} - env ${process.env.NODE_ENV}`);
     });
