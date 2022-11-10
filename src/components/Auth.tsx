@@ -14,6 +14,7 @@ const Auth = () => {
   const submitLogin = async () => {
     const model: UserInput = { username, password };
     const res = await login(model);
+    console.log(res);
     if (res.ok) Router.push('/');
   };
 

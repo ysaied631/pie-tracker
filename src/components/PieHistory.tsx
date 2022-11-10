@@ -23,7 +23,7 @@ const PieHistory = ({ user }: PieHistoryPropsI) => {
   const [listening, setListening] = useState(false);
 
   useEffect(() => {
-    if (!listening) {
+    if (!listening && user) {
       const sse = new EventSource(`/sse?userId=${user?.id}`);
 
       sse.onmessage = (e) => {
