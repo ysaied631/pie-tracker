@@ -66,7 +66,13 @@ const PieHistory = ({ user }: PieHistoryPropsI) => {
                   })}
                   className={styles.Chart}
                   label={({ dataEntry }) =>
-                    `${dataEntry.title}-${dataEntry.value}`
+                    `${dataEntry.title} - ${Math.round(
+                      (dataEntry.value /
+                        pie.activities
+                          .map((x) => x.hours)
+                          .reduce((psum, a) => psum + a, 0)) *
+                        100
+                    )}%`
                   }
                   labelStyle={{ fontSize: "5px" }}
                 />

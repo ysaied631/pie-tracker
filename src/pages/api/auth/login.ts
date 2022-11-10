@@ -16,6 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (method != "POST") res.status(400).send("Bad request method");
 
   const user = await UserModel.findOne({ username: body.username });
+  console.log("found user");
 
   if (user) {
     const authed = await argon2.verify(user.passwordHash, body.password);
