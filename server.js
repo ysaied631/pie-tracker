@@ -1,8 +1,8 @@
 import { config } from "dotenv";
-import express, { Request, Response } from "express";
+import express from "express";
 import next from "next";
 import mongoose from "mongoose";
-import PieModel from "./src/db/PieModel";
+import PieModel from "./src/db/PieModel.js";
 import { Types } from "mongoose";
 
 config();
