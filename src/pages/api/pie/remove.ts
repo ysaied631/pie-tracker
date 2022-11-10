@@ -11,7 +11,7 @@ type reqBody = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req;
   const { userId, activity } = req.body as reqBody;
-  await runCorsMiddleware(req, res);
+  //await runCorsMiddleware(req, res);
   if (method != "POST") res.status(400).send("Bad request method");
 
   const todaysPie = await PieModel.findOne({
