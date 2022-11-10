@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 import express, { Request, Response } from 'express';
 import next from 'next';
-import mongoose from 'mongoose';
+import dbConnect from './src/utils/dbConnect';
 import PieModel from './src/db/PieModel';
 import { Types } from 'mongoose';
 
@@ -14,13 +14,13 @@ config();
   const handle = app.getRequestHandler();
 
   try {
-    await mongoose.connect(
-      process.env.MONGO_URL || '' /*, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }*/
-    );
-    console.log('Connected to DB !!');
+    // await mongoose.connect(
+    //   process.env.MONGO_URL || '' /*, {
+    //   useNewUrlParser: true,
+    //   useUnifiedTopology: true,
+    // }*/
+    // );
+    // console.log('Connected to DB !!');
 
     await app.prepare();
     const server = express();
@@ -36,12 +36,13 @@ config();
 
       const interval: ReturnType<typeof setTimeout> = setInterval(async () => {
         if (userId) {
+          await dbConnect();
           const data = await PieModel.find({
             userId: new Types.ObjectId(userId.toString()),
           });
           data.sort(
             (a, b) =>
-              b.createdAt.getMilliseconds() - a.createdAt.getMilliseconds()
+              b.createdAt.getMilliseconds() - a.createdAt.getMilliseconds(),
           );
           data.slice(0, 6);
           res.write(`data: ${JSON.stringify(data)}\n\n`);
@@ -58,7 +59,7 @@ config();
     });
 
     server.all('/healthcheck', (req: Request, res: Response) =>
-      res.status(200).send('Healthy')
+      res.status(200).send('Healthy'),
     );
 
     server.all('*', (req: Request, res: Response) => handle(req, res));

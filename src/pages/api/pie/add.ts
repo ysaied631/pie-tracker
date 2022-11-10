@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { runCorsMiddleware } from '@utils/middleware';
 import PieModel from '@src/db/PieModel';
+import dbConnect from '@utils/dbConnect';
 
 type reqBody = {
   userId: string;
@@ -13,6 +14,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId, activity } = req.body as reqBody;
   //await runCorsMiddleware(req, res);
   if (method != 'POST') res.status(400).send('Bad request method');
+
+  await dbConnect();
 
   const dateWithoutTime = new Date();
   dateWithoutTime.setHours(0, 0, 0, 0);
@@ -28,19 +31,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const updatePie = {
       activities: activityExists
         ? [
-          ...todaysPie.activities.filter((x) => x.name != activity),
-          {
-            name: activity,
-            hours: activityExists.hours + 1,
-          },
-        ]
+            ...todaysPie.activities.filter((x) => x.name != activity),
+            {
+              name: activity,
+              hours: activityExists.hours + 1,
+            },
+          ]
         : [
-          ...todaysPie.activities.filter((x) => x.name != activity),
-          {
-            name: activity,
-            hours: 1,
-          },
-        ],
+            ...todaysPie.activities.filter((x) => x.name != activity),
+            {
+              name: activity,
+              hours: 1,
+            },
+          ],
     };
     await todaysPie.updateOne(updatePie);
   } else {

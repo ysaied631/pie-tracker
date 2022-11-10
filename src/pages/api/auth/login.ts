@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { setCookie, cookieOptions } from '@utils/cookies';
 import UserModel from '@db/UserModel';
 import * as argon2 from 'argon2';
+import dbConnect from '@utils/dbConnect';
 
 const JWT_TOKEN_KEY = process.env.JWT_TOKEN_KEY || '';
 
@@ -16,6 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (method != 'POST') res.status(400).send('Bad request method');
 
+  await dbConnect();
   const user = await UserModel.findOne({ username: body.username });
   console.log('found user');
   res.status(200).send(body);
