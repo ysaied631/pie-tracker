@@ -8,6 +8,7 @@
     "start": "ts-node server.ts",
     "lint": "next lint"
   },
+  "main": "server.ts",
   "dependencies": {
     "argon2": "^0.28.7",
     "classnames": "^2.3.1",
