@@ -33,19 +33,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         activities:
           activityExists?.hours > 1
             ? [
-                ...todaysPie.activities.filter((x) => x.name != activity),
-                {
-                  name: activity,
-                  hours: activityExists.hours - 1,
-                },
-              ]
+              ...todaysPie.activities.filter((x) => x.name != activity),
+              {
+                name: activity,
+                hours: activityExists.hours - 1,
+              },
+            ]
             : [
-                ...todaysPie.activities.filter((x) => x.name != activity),
-                {
-                  name: activity,
-                  hours: 0,
-                },
-              ],
+              ...todaysPie.activities.filter((x) => x.name != activity),
+              {
+                name: activity,
+                hours: 0,
+              },
+            ],
       };
       await todaysPie.updateOne(updatePie);
     }
