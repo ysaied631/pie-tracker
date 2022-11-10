@@ -11,7 +11,6 @@ const JWT_TOKEN_KEY = process.env.JWT_TOKEN_KEY || '';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { body, method } = req;
-  console.log('start');
 
   //await runCorsMiddleware(req, res);
 
@@ -19,8 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   await dbConnect();
   const user = await UserModel.findOne({ username: body.username });
-  console.log('found user');
-  res.status(200).send(body);
+
   if (user) {
     const authed = await argon2.verify(user.passwordHash, body.password);
 
