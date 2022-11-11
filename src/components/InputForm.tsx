@@ -29,6 +29,10 @@ const options: OptionType[] = [
     label: 'Unit testing',
     value: 'Unit testing',
   },
+  {
+    label: 'Training Course',
+    value: 'Training Course',
+  },
 ];
 
 interface InputFormPropsI {
