@@ -18,20 +18,20 @@ const options: OptionType[] = [
     value: 'Coding',
   },
   {
+    label: 'Documentation & Ticketing',
+    value: 'Documentation & Ticketing',
+  },
+  {
     label: 'PRs',
     value: 'PRs',
   },
   {
-    label: 'Ticketing',
-    value: 'Ticketing',
+    label: 'Training Course',
+    value: 'Training Course',
   },
   {
     label: 'Unit testing',
     value: 'Unit testing',
-  },
-  {
-    label: 'Training Course',
-    value: 'Training Course',
   },
 ];
 
