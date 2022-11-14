@@ -2,38 +2,8 @@ import React, { useState } from 'react';
 import { User, Pie } from '@src/types';
 import Select, { SingleValue } from 'react-select';
 import styles from '@components/InputForm.module.scss';
-
-type OptionType = {
-  value: string;
-  label: string;
-};
-
-const options: OptionType[] = [
-  {
-    label: 'Calls',
-    value: 'Calls',
-  },
-  {
-    label: 'Coding',
-    value: 'Coding',
-  },
-  {
-    label: 'Documentation & Ticketing',
-    value: 'Documentation & Ticketing',
-  },
-  {
-    label: 'PRs',
-    value: 'PRs',
-  },
-  {
-    label: 'Training Course',
-    value: 'Training Course',
-  },
-  {
-    label: 'Unit testing',
-    value: 'Unit testing',
-  },
-];
+import { OptionType } from '@src/types';
+import { options } from '@components/Const';
 
 interface InputFormPropsI {
   user?: User;

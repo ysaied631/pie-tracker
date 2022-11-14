@@ -3,6 +3,7 @@ import styles from '@components/PieHistory.module.scss';
 import { Pie, Activity } from '@src/types';
 import _ from 'lodash';
 import { PieChart } from 'react-minimal-pie-chart';
+import { options } from '@components/Const';
 
 interface PieHistoryPropsI {
   pies: Pie[];
@@ -27,7 +28,8 @@ const PieHistory = ({ pies }: PieHistoryPropsI) => {
                     .filter((activity: Activity) => activity.hours > 0)
                     .map((activity: Activity) => {
                       return {
-                        title: activity.name,
+                        title: options.find((x) => x.value == activity.name)
+                          ?.label,
                         value: activity.hours,
                         color:
                           '#' +
