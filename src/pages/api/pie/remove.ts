@@ -26,24 +26,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   if (todaysPie) {
-    const activityExists = todaysPie.activities.find((x) => x.name == activity);
+    const activityExists = todaysPie.activities.find(
+      (x) => x.activity == activity,
+    );
 
     if (activityExists) {
       const updatePie = {
         activities:
-          activityExists?.hours > 1
+          activityExists?.units > 1
             ? [
-              ...todaysPie.activities.filter((x) => x.name != activity),
+              ...todaysPie.activities.filter((x) => x.activity != activity),
               {
-                name: activity,
-                hours: activityExists.hours - 1,
+                activity: activity,
+                units: activityExists.units - 1,
               },
             ]
             : [
-              ...todaysPie.activities.filter((x) => x.name != activity),
+              ...todaysPie.activities.filter((x) => x.activity != activity),
               {
-                name: activity,
-                hours: 0,
+                activity: activity,
+                units: 0,
               },
             ],
       };

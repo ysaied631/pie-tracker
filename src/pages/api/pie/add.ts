@@ -26,22 +26,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   if (todaysPie) {
-    const activityExists = todaysPie.activities.find((x) => x.name == activity);
+    const activityExists = todaysPie.activities.find(
+      (x) => x.activity == activity,
+    );
 
     const updatePie = {
       activities: activityExists
         ? [
-          ...todaysPie.activities.filter((x) => x.name != activity),
+          ...todaysPie.activities.filter((x) => x.activity != activity),
           {
-            name: activity,
-            hours: activityExists.hours + 1,
+            activity: activity,
+            units: activityExists.units + 1,
           },
         ]
         : [
-          ...todaysPie.activities.filter((x) => x.name != activity),
+          ...todaysPie.activities.filter((x) => x.activity != activity),
           {
-            name: activity,
-            hours: 1,
+            activity: activity,
+            units: 1,
           },
         ],
     };
@@ -52,8 +54,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       createdAt: dateWithoutTime,
       activities: [
         {
-          name: activity,
-          hours: 1,
+          activity: activity,
+          units: 1,
         },
       ],
     });

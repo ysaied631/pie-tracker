@@ -1,6 +1,6 @@
 type Activity = {
-  name: string;
-  hours: number;
+  activity: string;
+  units: number;
 };
 
 export default Activity;

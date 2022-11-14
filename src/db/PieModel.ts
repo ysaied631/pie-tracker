@@ -1,13 +1,13 @@
 import { Document, model, Schema, Model, Types, models } from 'mongoose';
 
 type Activity = {
-  name: string;
-  hours: number;
+  activity: string;
+  units: number;
 };
 
 interface ActivityInterface extends Document {
-  name: string;
-  hours: number;
+  activity: string;
+  units: number;
 }
 
 export interface PieInterface extends Document {
@@ -19,14 +19,14 @@ export interface PieInterface extends Document {
 
 const ActivitiesSchema = new Schema<ActivityInterface>(
   {
-    name: {
+    activity: {
       type: String,
     },
-    hours: {
+    units: {
       type: Number,
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const PiesSchema = new Schema<PieInterface>({

@@ -25,12 +25,12 @@ const PieHistory = ({ pies }: PieHistoryPropsI) => {
               <div className={styles.Pie} key={index}>
                 <PieChart
                   data={pie.activities
-                    .filter((activity: Activity) => activity.hours > 0)
+                    .filter((activity: Activity) => activity.units > 0)
                     .map((activity: Activity) => {
                       return {
-                        title: options.find((x) => x.value == activity.name)
+                        title: options.find((x) => x.value == activity.activity)
                           ?.label,
-                        value: activity.hours,
+                        value: activity.units,
                         color:
                           '#' +
                           ((Math.random() * 0xffffff) << 0)
@@ -43,7 +43,7 @@ const PieHistory = ({ pies }: PieHistoryPropsI) => {
                     `${dataEntry.title} - ${Math.round(
                       (dataEntry.value /
                         pie.activities
-                          .map((x) => x.hours)
+                          .map((x) => x.units)
                           .reduce((psum, a) => psum + a, 0)) *
                         100,
                     )}%`
