@@ -18,8 +18,8 @@ const PieHistory = ({ pies }: PieHistoryPropsI) => {
           pies
             ?.sort(
               (a: Pie, b: Pie) =>
-                new Date(b.createdAt).getMilliseconds() -
-                new Date(a.createdAt).getMilliseconds(),
+                new Date(a.createdAt).valueOf() -
+                new Date(b.createdAt).valueOf(),
             )
             .map((pie: Pie, index: number) => (
               <div className={styles.Pie} key={index}>
