@@ -7,7 +7,7 @@ export const options: OptionType[] = [
   },
   {
     label: 'Code / Dev work / Delivery',
-    value: 'code_dev_devlivery',
+    value: 'code_dev_delivery',
   },
   {
     label: 'PRs',
