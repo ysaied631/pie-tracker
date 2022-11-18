@@ -10,13 +10,13 @@ interface HeaderPropsI {
   user?: User;
 }
 
-const Header = ({ user }: HeaderPropsI) => {
+const Header: React.FunctionComponent<HeaderPropsI> = ({
+  user,
+}: HeaderPropsI) => {
   const router = useRouter();
   return (
     <div className={styles.headerContainer}>
-      <span className={styles.headerLogo} onClick={() => router.push('/')}>
-        Logo
-      </span>
+      <span className={styles.headerLogo}></span>
       <div className={styles.headerRoutes}>
         {Routes.map((x: Route) => {
           return (
@@ -24,6 +24,7 @@ const Header = ({ user }: HeaderPropsI) => {
               key={x.id}
               href={x.route}
               className={classNames({
+                [styles.headerText]: true,
                 [styles.headerSelectedRoute]: x.route == router.pathname,
               })}
             >
@@ -44,7 +45,7 @@ const Header = ({ user }: HeaderPropsI) => {
           className={styles.authButton}
           onClick={async () => {
             await logout();
-            router.reload();
+            router.push('/auth');
           }}
         >
           Logout

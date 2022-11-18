@@ -3,7 +3,7 @@ import type { NextPage, GetServerSidePropsContext } from 'next';
 import { userFromRequest } from '@utils/auth';
 import { User } from '@src/types';
 import Layout from '@components/Layout';
-import Home from '@components/Home';
+import PieHistory from '@components/PieHistory';
 
 interface HomePagePropsI {
   user?: User;
@@ -12,7 +12,7 @@ interface HomePagePropsI {
 const HomePage: NextPage = ({ user }: HomePagePropsI) => {
   return (
     <Layout user={user}>
-      <Home user={user} />
+      <PieHistory user={user} />
     </Layout>
   );
 };

@@ -1,18 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '@components/PieHistory.module.scss';
-import { Pie, Activity } from '@src/types';
+import { Pie, Activity, OptionType, User } from '@src/types';
 import _ from 'lodash';
 import { PieChart } from 'react-minimal-pie-chart';
 import { options } from '@components/Const';
+import PieModal from '@components/PieModal';
 
 interface PieHistoryPropsI {
-  pies: Pie[];
+  user?: User;
 }
 
-const PieHistory = ({ pies }: PieHistoryPropsI) => {
+const PieHistory: React.FunctionComponent<PieHistoryPropsI> = ({
+  user,
+}: PieHistoryPropsI) => {
+  const [selectedPie, setSelectedPie] = useState<Pie | null>(null);
+  const [pies, setPies] = useState<Pie[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const GetPies = async () => {
+    const res = await fetch(`/api/pie/get?userId=${user?.id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    setPies(await res.json());
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (loading) {
+      GetPies();
+    }
+  }, []);
+
   return (
     <div className={styles.Container}>
-      <span className={styles.Title}>Last 7 charts</span>
       <div className={styles.PieContainer}>
         {pies?.length > 0 &&
           pies
@@ -24,18 +47,18 @@ const PieHistory = ({ pies }: PieHistoryPropsI) => {
             .map((pie: Pie, index: number) => (
               <div className={styles.Pie} key={index}>
                 <PieChart
+                  onClick={() => setSelectedPie(pie)}
                   data={pie.activities
                     .filter((activity: Activity) => activity.units > 0)
                     .map((activity: Activity) => {
+                      const option: OptionType =
+                        options.find(
+                          (x: OptionType) => x.value == activity.activity,
+                        ) || options[0];
                       return {
-                        title: options.find((x) => x.value == activity.activity)
-                          ?.label,
+                        title: option?.label,
                         value: activity.units,
-                        color:
-                          '#' +
-                          ((Math.random() * 0xffffff) << 0)
-                            .toString(16)
-                            .padStart(6, '0'),
+                        color: option?.colour || '#ffffff',
                       };
                     })}
                   className={styles.Chart}
@@ -43,17 +66,26 @@ const PieHistory = ({ pies }: PieHistoryPropsI) => {
                     `${dataEntry.title} - ${Math.round(
                       (dataEntry.value /
                         pie.activities
-                          .map((x) => x.units)
-                          .reduce((psum, a) => psum + a, 0)) *
+                          .map((x: Activity) => x.units)
+                          .reduce((psum: number, a: number) => psum + a, 0)) *
                         100,
                     )}%`
                   }
-                  labelStyle={{ fontSize: '5px' }}
+                  labelStyle={{ fontSize: '5px', fill: 'white' }}
                 />
                 <span>{new Date(pie.createdAt).toDateString()}</span>
               </div>
             ))}
       </div>
+      {selectedPie && (
+        <PieModal
+          selectedPie={selectedPie}
+          closeModal={async () => {
+            await GetPies();
+            setSelectedPie(null);
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -2,7 +2,6 @@
   margin: 15px 15% 15px 15%;
   width: 70%;
   height: 40px;
-  border: 1px solid black;
   border-radius: 5px;
   display: inline-flex;
   justify-content: space-between;
@@ -10,11 +9,16 @@
 }
 
 .headerLogo {
-  margin-left: 20px;
+  margin-left: 40px;
+  color: white;
 }
 
 .headerRoutes {
   gap: 8px;
+}
+
+.headerText {
+  color: white;
 }
 
 .headerSelectedRoute {

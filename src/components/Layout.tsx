@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { User } from '@src/types';
 import Header from '@components/Header';
 import useRouter from 'next/router';
+import styles from '@components/Layout.module.scss';
 
 interface LayoutPropsI {
   user?: User;
@@ -28,7 +29,7 @@ function recursiveMap(children: any, fn: any) {
       }
 
       return fn(child);
-    }
+    },
   );
 }
 
@@ -38,7 +39,7 @@ const Layout = ({ user, children }: LayoutPropsI) => {
   useEffect(() => {
     if (user) {
       children = recursiveMap(children, (child: any) =>
-        React.cloneElement(child, { user })
+        React.cloneElement(child, { user }),
       );
     } else {
       router.push('/auth');
@@ -46,11 +47,10 @@ const Layout = ({ user, children }: LayoutPropsI) => {
   }, [user]);
 
   return (
-    <>
-      {/* Background Image */}
+    <div className={styles.background}>
       <Header user={user} />
       {children}
-    </>
+    </div>
   );
 };
 
