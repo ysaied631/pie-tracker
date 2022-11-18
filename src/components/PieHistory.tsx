@@ -28,11 +28,26 @@ const PieHistory: React.FunctionComponent<PieHistoryPropsI> = ({
     setLoading(false);
   };
 
+  const CreateToday = async () => {
+    const res = await fetch(`/api/pie/add?userId=${user?.id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (res.ok) {
+      await GetPies();
+    }
+  };
+
   useEffect(() => {
     if (loading) {
       GetPies();
     }
   }, []);
+
+  const dateWithoutTime = new Date();
+  dateWithoutTime.setHours(0, 0, 0, 0);
 
   return (
     <div className={styles.Container}>
@@ -45,9 +60,12 @@ const PieHistory: React.FunctionComponent<PieHistoryPropsI> = ({
                 new Date(b.createdAt).valueOf(),
             )
             .map((pie: Pie, index: number) => (
-              <div className={styles.Pie} key={index}>
+              <div
+                className={styles.Pie}
+                key={index}
+                onClick={() => setSelectedPie(pie)}
+              >
                 <PieChart
-                  onClick={() => setSelectedPie(pie)}
                   data={pie.activities
                     .filter((activity: Activity) => activity.units > 0)
                     .map((activity: Activity) => {
@@ -73,9 +91,23 @@ const PieHistory: React.FunctionComponent<PieHistoryPropsI> = ({
                   }
                   labelStyle={{ fontSize: '5px', fill: 'white' }}
                 />
-                <span>{new Date(pie.createdAt).toDateString()}</span>
+                <span className={styles.PieLabel}>
+                  {new Date(pie.createdAt).toDateString()}
+                </span>
               </div>
             ))}
+        {!pies.find(
+          (pie: Pie) =>
+            new Date(pie.createdAt).valueOf() == dateWithoutTime.valueOf(),
+        ) && (
+          <div className={styles.CreateContainer}>
+            <div></div>
+            <button className={styles.CreateButton} onClick={CreateToday}>
+              Create today's pie
+            </button>
+            <span className={styles.PieLabel}>{new Date().toDateString()}</span>
+          </div>
+        )}
       </div>
       {selectedPie && (
         <PieModal
