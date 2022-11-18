@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '@components/PieHistory.module.scss';
 import { Pie, Activity, OptionType, User } from '@src/types';
-import _ from 'lodash';
 import { PieChart } from 'react-minimal-pie-chart';
 import { options } from '@components/Const';
 import PieModal from '@components/PieModal';
@@ -103,7 +102,7 @@ const PieHistory: React.FunctionComponent<PieHistoryPropsI> = ({
           <div className={styles.CreateContainer}>
             <div></div>
             <button className={styles.CreateButton} onClick={CreateToday}>
-              Create today's pie
+              Create todays pie
             </button>
             <span className={styles.PieLabel}>{new Date().toDateString()}</span>
           </div>
