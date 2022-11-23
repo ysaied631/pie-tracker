@@ -20,12 +20,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     userId: new Types.ObjectId(userId.toString()),
   });
 
-  data.sort(
-    (a, b) => b.createdAt.getMilliseconds() - a.createdAt.getMilliseconds(),
-  );
-  data.slice(0, 6);
+  const dateWithoutTime = new Date();
+  dateWithoutTime.setHours(0, 0, 0, 0);
 
-  res.status(200).json(data as Pie[]);
+  data.sort((a, b) => b.createdAt.valueOf() - a.createdAt.valueOf());
+  const weekPies: Pie[] = data.slice(
+    0,
+    data.map((x) => x.createdAt).includes(dateWithoutTime) ? 7 : 6,
+  );
+
+  res.status(200).json(weekPies);
 };
 
 export default handler;
